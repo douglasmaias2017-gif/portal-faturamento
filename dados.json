@@ -1,0 +1,113 @@
+{
+  "processos": [
+    {
+      "id": "proc-01",
+      "title": "Capacitação SAP BRIM - Bloco 4 (Final)",
+      "sapApp": "FP05 / VF01",
+      "sla": "Faturamento em Lote",
+      "lastUpdate": "2026-07-22",
+      "description": "Revisão do fluxo de faturamento estatístico, regras para notas bloqueadas, cancelamentos e estratégias de cartas de correção.",
+      "videoUrl": "https://drive.google.com/file/d/1-yOYbeqMn2eM8qQ2kTm95b48jAuWoJRk/view?usp=sharing",
+      "documentUrl": "https://drive.google.com/open?id=1DFd_nGRDzDeDEp7RBZGVM5ig2c5DIdvN",
+      "documentName": "Apresentação Capacitação SAP.pptx",
+      "steps": [
+        "Higienizar e ajustar casas decimais e NCM no arquivo CSV antes do carregamento",
+        "Executar o aplicativo de cálculo para geração do documento de faturamento estatístico",
+        "Verificar logs de erro para tratar inconsistências de parceiros de negócios (BP) ou contratos concluídos",
+        "Efetuar o desbloqueio ou estorno de faturas dentro dos períodos contábeis abertos"
+      ]
+    },
+    {
+      "id": "proc-02",
+      "title": "Processamento de Faturamento Estatístico via CSV (Belo Horizonte)",
+      "sapApp": "ZFAT_BH01",
+      "sla": "45 Minutos",
+      "lastUpdate": "2026-07-21",
+      "description": "Validação de medições e importação de lotes no layout padrão para a prefeitura de BH.",
+      "videoUrl": "https://drive.google.com/file/d/1XGNxC0o-yLIRibhQG_ntE-Y8R2oP1L7P/view",
+      "documentUrl": "https://drive.google.com/open?id=10skduUS_c-ZW3cIJkqJd_fPMuUQ4tOhP",
+      "documentName": "Cronograma de Capacitação SAP BRIM.pdf",
+      "steps": [
+        "Validar se a Nomenclatura Comum do Mercosul (NCM) possui a pontuação correta",
+        "Executar o parse do arquivo no aplicativo ZFAT_BH01",
+        "Conferir relatório de rejeições e ajustar contas contratuais divergentes"
+      ]
+    },
+    {
+      "id": "proc-03",
+      "title": "Emissão e Anexo de Cartas de Correção (SP vs BH)",
+      "sapApp": "FPE1 / Portal SP",
+      "sla": "1 hora",
+      "lastUpdate": "2026-07-20",
+      "description": "Procedimento diferenciado para retificação fiscal: transmissão via portal eletrônico para SP e minuta manual em PDF assinada para BH.",
+      "videoUrl": "https://drive.google.com/file/d/1-yOYbeqMn2eM8qQ2kTm95b48jAuWoJRk/view?usp=sharing",
+      "documentUrl": "",
+      "steps": [
+        "Identificar o local de negócios da nota (BR11 para BH ou BR12 para SP)",
+        "Para SP: Acessar o portal com certificado digital e emitir a carta eletrônica diretamente no site",
+        "Para BH: Preencher o modelo Word/PDF padronizado e coletar assinatura do responsável",
+        "Anexar a confirmação de emissão ao histórico fiscal do documento"
+      ]
+    }
+  ],
+  "sapApps": [
+    {
+      "code": "FP05",
+      "name": "Processamento de Pagamentos FI-CA",
+      "objective": "Baixa de títulos faturados em lote via arquivo de retorno bancário (CNAB 240).",
+      "goodPractices": "Sempre verificar se a variante de seleção de data abrange o fuso de Brasília (UTC-3)."
+    },
+    {
+      "code": "FPE1",
+      "name": "Lançamento de Documento Manual",
+      "objective": "Ajuste contábil direto, correções fiscais manuais e estornos de notas fora do prazo.",
+      "goodPractices": "Exige aprovação em 2º nível para valores superiores a R$ 50.000,00."
+    },
+    {
+      "code": "F110",
+      "name": "Parâmetros e Liquidação Automática",
+      "objective": "Verificação e execução de rotinas automáticas de liquidação e cobrança.",
+      "goodPractices": "Validar inconsistências de retenção de impostos antes de rodar o lote principal."
+    },
+    {
+      "code": "VF01 / VF02",
+      "name": "Criação e Modificação de Documento de Faturamento",
+      "objective": "Geração individual de fatura e manutenção de notas em estado de bloqueio.",
+      "goodPractices": "Manter notas em teste sempre bloqueadas para evitar faturamento prematuro."
+    }
+  ],
+  "melhorias": [
+    {
+      "id": "MEL-804",
+      "title": "Automação API NFe para Prefeitura de SP",
+      "status": "Em Desenvolvimento",
+      "priority": "Alta",
+      "vendor": "Consultoria TechCorp",
+      "process": "Emissão Eletrônica SP"
+    },
+    {
+      "id": "MEL-812",
+      "title": "Dashboard de Monitoramento de Erros FI-CA",
+      "status": "Aguardando Aprovação",
+      "priority": "Média",
+      "vendor": "Time Interno Frontend",
+      "process": "Logs SAP BRIM"
+    }
+  ],
+  "defeitos": [
+    {
+      "id": "BUG-102",
+      "errorCode": "ERR_TAX_RETENTION_09",
+      "title": "Erro no cálculo de ISS retido para serviços fora do município",
+      "workaround": "Efetuar a correção temporária via transação FPE1 aplicando a flag manual de isenção.",
+      "status": "Investigando"
+    },
+    {
+      "id": "BUG-108",
+      "errorCode": "ERR_CSV_NCM_INVALID",
+      "title": "Rejeição de lote por ausência de pontos na numeração do NCM",
+      "workaround": "Aplicar a macro de formatação de texto na planilha CSV antes de carregar no ZFAT_BH01.",
+      "status": "Solucionado"
+    }
+  ]
+}
